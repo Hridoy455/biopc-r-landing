@@ -11,11 +11,14 @@
  */
 
 // Must match SHEETS_SHARED_SECRET in your site's environment variables.
-var SHARED_SECRET = 'change-me-to-a-long-random-string';
+var SHARED_SECRET = 'I Love BioPC';
 
 // Optional: a Drive folder ID to store payment screenshots. Leave '' to skip.
 // (Create a folder in Drive, open it, and copy the ID from the URL.)
 var SCREENSHOT_FOLDER_ID = '';
+
+// Where "new registration" alerts are sent. Change to your preferred inbox.
+var ADMIN_EMAIL = 'research@biopc.org';
 
 var SHEET_NAME = 'Registrations';
 
@@ -63,10 +66,13 @@ function doPost(e) {
       data.userAgent || '',
     ]);
 
-    // Optional: send a confirmation email to the student.
+    // Send a confirmation email to the student.
     if (data.email) {
       sendConfirmationEmail(data);
     }
+
+    // Notify the admin (you) with the full registration details.
+    sendAdminNotification(data, screenshotLink);
 
     return jsonResponse({ ok: true });
   } catch (err) {
@@ -134,6 +140,51 @@ function sendConfirmationEmail(data) {
   } catch (err) {
     // Non-fatal: registration is still stored even if the email fails.
     Logger.log('Email failed: ' + err);
+  }
+}
+
+/**
+ * Emails YOU (ADMIN_EMAIL) the full details of each new registration, so you
+ * get every lead straight to your inbox in addition to the spreadsheet row.
+ * The student's email is set as reply-to, so you can reply to them directly.
+ */
+function sendAdminNotification(data, screenshotLink) {
+  try {
+    if (!ADMIN_EMAIL) return;
+
+    var subject = '🎓 New registration: ' + (data.fullName || 'Unknown') +
+      ' — R Programming for Biologists';
+
+    var lines = [
+      'A new student just registered. Details:',
+      '',
+      'Name:            ' + (data.fullName || '-'),
+      'Email:           ' + (data.email || '-'),
+      'Phone:           ' + (data.phone || '-'),
+      'WhatsApp:        ' + (data.whatsapp || '-'),
+      'University:      ' + (data.university || '-'),
+      'Department:      ' + (data.department || '-'),
+      'Country:         ' + (data.country || '-'),
+      'Academic level:  ' + (data.academicLevel || '-'),
+      'Current skills:  ' + (data.currentSkills || '-'),
+      '',
+      'Payment method:  ' + (data.paymentMethod || '-'),
+      'Transaction ID:  ' + (data.transactionId || '-'),
+      'Screenshot:      ' + (screenshotLink || '(none uploaded)'),
+      '',
+      'Submitted at:    ' + (data.submittedAt || new Date().toISOString()),
+      '',
+      'Open your registrations sheet to verify payment and set the status.',
+    ];
+
+    var options = { name: 'BioPC Registrations' };
+    // Let you hit "Reply" and reach the student directly.
+    if (data.email) options.replyTo = data.email;
+
+    MailApp.sendEmail(ADMIN_EMAIL, subject, lines.join('\n'), options);
+  } catch (err) {
+    // Non-fatal: the registration is still stored even if this email fails.
+    Logger.log('Admin notification failed: ' + err);
   }
 }
 
