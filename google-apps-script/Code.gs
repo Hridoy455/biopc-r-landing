@@ -13,12 +13,14 @@
 // Must match SHEETS_SHARED_SECRET in your site's environment variables.
 var SHARED_SECRET = 'I Love BioPC';
 
-// Optional: a Drive folder ID to store payment screenshots. Leave '' to skip.
-// (Create a folder in Drive, open it, and copy the ID from the URL.)
+// Where payment screenshots are stored in your Google Drive.
+// Leave SCREENSHOT_FOLDER_ID = '' and the script auto-creates/reuses a folder
+// named below. To use a specific folder, paste its ID (from the folder URL).
 var SCREENSHOT_FOLDER_ID = '';
+var SCREENSHOT_FOLDER_NAME = 'BioPC Payment Screenshots';
 
 // Where "new registration" alerts are sent. Change to your preferred inbox.
-var ADMIN_EMAIL = 'research@biopc.org';
+var ADMIN_EMAIL = 'biopc.research@gmail.com';
 
 var SHEET_NAME = 'Registrations';
 
@@ -43,7 +45,7 @@ function doPost(e) {
     var sheet = getSheet();
 
     var screenshotLink = '';
-    if (data.screenshotData && SCREENSHOT_FOLDER_ID) {
+    if (data.screenshotData) {
       screenshotLink = saveScreenshot(data.screenshotData, data.screenshotName, data.email);
     }
 
@@ -106,13 +108,28 @@ function saveScreenshot(dataUrl, name, email) {
     var bytes = Utilities.base64Decode(match[2]);
     var safeName = (email || 'payment').replace(/[^a-z0-9._-]/gi, '_') + '_' + (name || 'screenshot');
     var blob = Utilities.newBlob(bytes, contentType, safeName);
-    var folder = DriveApp.getFolderById(SCREENSHOT_FOLDER_ID);
+    var folder = getScreenshotFolder();
     var file = folder.createFile(blob);
     file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
     return file.getUrl();
   } catch (err) {
     return 'Error saving screenshot: ' + err;
   }
+}
+
+/**
+ * Returns the Drive folder for screenshots. Uses SCREENSHOT_FOLDER_ID if set,
+ * otherwise finds or creates a folder named SCREENSHOT_FOLDER_NAME in My Drive.
+ */
+function getScreenshotFolder() {
+  if (SCREENSHOT_FOLDER_ID) {
+    return DriveApp.getFolderById(SCREENSHOT_FOLDER_ID);
+  }
+  var existing = DriveApp.getFoldersByName(SCREENSHOT_FOLDER_NAME);
+  if (existing.hasNext()) {
+    return existing.next();
+  }
+  return DriveApp.createFolder(SCREENSHOT_FOLDER_NAME);
 }
 
 /**
@@ -130,9 +147,9 @@ function sendConfirmationEmail(data) {
       '  • Payment method: ' + (data.paymentMethod || '-') + '\n' +
       '  • Transaction ID: ' + (data.transactionId || '-') + '\n' +
       '  • Status: Pending verification\n\n' +
-      'Next steps: our team will verify your payment and confirm your seat by email. ' +
-      'Please keep an eye on your inbox (and spam folder).\n\n' +
-      'Questions? Reply to this email or contact research@biopc.org.\n\n' +
+      'Next steps: our team will verify your payment. ' +
+      'Please join this WhatsApp group: https://chat.whatsapp.com/JoSdCI04fvU8Z0Rj5WBpe3.\n\n' +
+      'Questions? Reply to this email or contact biopc.research@gmail.com.\n\n' +
       'Warm regards,\n' +
       'BioPC — A Bioinformatics Lab of Research and Training';
 

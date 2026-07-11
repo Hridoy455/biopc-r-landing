@@ -15,7 +15,48 @@ import {
   type RegistrationPayload,
 } from '@/lib/registration';
 
-const MAX_SCREENSHOT_BYTES = 4 * 1024 * 1024; // 4 MB
+const MAX_SCREENSHOT_BYTES = 10 * 1024 * 1024; // 10 MB raw input cap
+const MAX_IMAGE_DIMENSION = 1400; // px — screenshots are downscaled to this
+
+/**
+ * Downscale + re-encode an image in the browser to a compact JPEG data URL.
+ * Keeps the upload small (well under serverless body limits) regardless of the
+ * original photo size. Falls back to the raw data URL if canvas isn't available.
+ */
+async function compressImage(file: File): Promise<string> {
+  const rawDataUrl = await new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = () => reject(new Error('read_failed'));
+    reader.readAsDataURL(file);
+  });
+
+  try {
+    const img = await new Promise<HTMLImageElement>((resolve, reject) => {
+      const image = new Image();
+      image.onload = () => resolve(image);
+      image.onerror = () => reject(new Error('decode_failed'));
+      image.src = rawDataUrl;
+    });
+
+    const scale = Math.min(1, MAX_IMAGE_DIMENSION / Math.max(img.width, img.height));
+    const width = Math.round(img.width * scale);
+    const height = Math.round(img.height * scale);
+
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return rawDataUrl;
+    // White background so transparent PNGs don't turn black as JPEG.
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, width, height);
+    ctx.drawImage(img, 0, 0, width, height);
+    return canvas.toDataURL('image/jpeg', 0.82);
+  } catch {
+    return rawDataUrl;
+  }
+}
 
 const emptyForm: RegistrationPayload = {
   fullName: '',
@@ -62,22 +103,20 @@ export function Registration() {
       return;
     }
     if (file.size > MAX_SCREENSHOT_BYTES) {
-      setErrors((e) => ({ ...e, screenshot: 'Image must be under 4 MB.' }));
+      setErrors((e) => ({ ...e, screenshot: 'Image must be under 10 MB.' }));
       return;
     }
     setErrors((e) => ({ ...e, screenshot: undefined }));
-    const data = await new Promise<string>((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
+    const data = await compressImage(file);
     setScreenshot({ name: file.name, data });
   }
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     const validation = validateRegistration(form);
+    if (!screenshot) {
+      validation.screenshot = 'Please upload your payment screenshot.';
+    }
     setErrors(validation);
     if (Object.keys(validation).length > 0) {
       const first = document.querySelector('[data-error="true"]');
@@ -191,8 +230,8 @@ export function Registration() {
                 ))}
               </ol>
               <p className="mt-4 text-xs text-muted">
-                After paying, enter your <strong>Transaction ID</strong> in the form and (optionally) upload a
-                screenshot. We verify and confirm your seat by email.
+                After paying, enter your <strong>Transaction ID</strong> and upload a
+                <strong> screenshot of the payment</strong> in the form. We verify and confirm your seat by email.
               </p>
             </div>
           </div>
@@ -259,7 +298,7 @@ export function Registration() {
               <Field label="Transaction ID *" error={errors.transactionId}>
                 <input className="field-input" value={form.transactionId} onChange={(e) => update('transactionId', e.target.value)} placeholder="e.g. TXN123ABC" />
               </Field>
-              <Field label="Payment screenshot (optional)" error={errors.screenshot} full>
+              <Field label="Payment screenshot *" error={errors.screenshot} full>
                 <input
                   className="field-input file:mr-3 file:rounded-full file:border-0 file:bg-accent-50 file:px-3 file:py-1 file:text-xs file:font-semibold file:text-accent-700"
                   type="file"

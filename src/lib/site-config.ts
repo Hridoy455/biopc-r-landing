@@ -11,12 +11,12 @@ export const siteConfig = {
   courseSubtitle: 'Learn Data Analysis, Statistics and Bioinformatics with R',
   courseShort: 'A hands-on, beginner-friendly live course that takes biologists from zero coding to confident data analysis in R.',
 
-  // Change this to your real registration deadline (ISO 8601, with timezone).
-  // Bangladesh Standard Time is UTC+6.
-  registrationDeadline: '2026-08-15T23:59:59+06:00',
+  // Registration deadline (ISO 8601, with timezone). Batch starts 1 Aug 2026,
+  // so registration closes end of 31 Jul 2026. Bangladesh Standard Time is UTC+6.
+  registrationDeadline: '2026-07-31T23:59:59+06:00',
 
-  // Change to your real batch start date.
-  courseStartDate: '2026-08-22',
+  // Batch start date.
+  courseStartDate: '2026-08-01',
 
   // Pricing (shown on the page + payment section).
   price: {
@@ -28,12 +28,17 @@ export const siteConfig = {
   format: {
     duration: '6 weeks',
     mode: 'Live online (Google Meet / Zoom)',
-    sessions: '2 live classes per week + recordings',
+    sessions: '3 live classes/week — Tue, Fri & Sat, 9:30–10:30 PM (BST)',
+    schedule: [
+      { day: 'Tuesday', time: '9:30 – 10:30 PM' },
+      { day: 'Friday', time: '9:30 – 10:30 PM' },
+      { day: 'Saturday', time: '9:30 – 10:30 PM' },
+    ],
     seats: 40,
   },
 
-  contactEmail: 'research@biopc.org',
-  altEmail: 'biopc.research@gmail.com',
+  contactEmail: 'biopc.research@gmail.com',
+  altEmail: 'research@biopc.org',
   whatsapp: '', // e.g. '+8801XXXXXXXXX' — shown as a support contact if set.
 
   social: {
@@ -45,10 +50,8 @@ export const siteConfig = {
 
   // Payment channels shown in the registration section.
   payments: [
-    { method: 'bKash', type: 'Personal', number: '01XXXXXXXXX', instruction: 'Send Money to this number, then enter the Transaction ID below.' },
-    { method: 'Nagad', type: 'Personal', number: '01XXXXXXXXX', instruction: 'Send Money to this number, then enter the Transaction ID below.' },
-    { method: 'Rocket', type: 'Personal', number: '01XXXXXXXXX', instruction: 'Send Money, then enter the Transaction ID below.' },
-    { method: 'Bank Transfer', type: 'A/C', number: 'Contact us for bank details', instruction: 'Email research@biopc.org for bank account details.' },
+    { method: 'bKash', type: 'Personal', number: '01855310554', instruction: 'Send Money to this bKash number, then enter the Transaction ID below.' },
+    { method: 'bKash / Nagad / Rocket', type: 'Personal', number: '01622488559', instruction: 'Send Money via bKash, Nagad, or Rocket to this number, then enter the Transaction ID below.' },
   ],
 } as const;
 

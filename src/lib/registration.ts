@@ -16,7 +16,7 @@ export const skillLevels = [
   'Intermediate',
 ] as const;
 
-export const paymentMethods = ['bKash', 'Nagad', 'Rocket', 'Bank Transfer'] as const;
+export const paymentMethods = ['bKash', 'Nagad', 'Rocket'] as const;
 
 export interface RegistrationPayload {
   fullName: string;

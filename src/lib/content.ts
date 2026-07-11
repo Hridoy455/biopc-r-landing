@@ -140,15 +140,20 @@ export const curriculum = [
 ] as const;
 
 export const instructor = {
-  name: 'Hridoy Ahmed',
-  role: 'Head Coordinator, BioPC',
-  bio: 'Bioinformatics researcher and founder of BioPC. Under his guidance, BioPC published its first paper in the Journal of Biomolecular Structure and Dynamics (IF 5.2) and has trained thousands of students in bioinformatics, drug design, and data analysis since 2021.',
+  name: 'Md. Hridoy Ahmed',
+  role: 'Researcher · Molecular & Computational Biologist · Founder, BioPC',
+  bio: 'A molecular and computational biology researcher trained in Genetic Engineering & Biotechnology at the University of Chittagong, and Research Associate at the Functional Genomics & Proteomics Laboratory (FGPL). His work spans bioinformatics, structure-based drug discovery, and immunoinformatics. He founded BioPC to make research skills — including R and data analysis — accessible to biologists, and has trained 3,000+ learners across 25+ programs.',
   highlights: [
-    'Published in Journal of Biomolecular Structure and Dynamics (IF 5.2)',
-    'Led 10+ signature training programs & olympiads',
-    'Mentored 3000+ students across 30+ universities',
+    'Research Associate, Functional Genomics & Proteomics Lab (FGPL), University of Chittagong',
+    'First-author publications in Q1 journals (incl. J. Biomolecular Structure & Dynamics, IF 5.2)',
+    'NST Fellow (Govt. of Bangladesh) · Best Research Paper Presenter, Darwin International Conference',
+    'Founder of BioPC — 3,000+ learners trained across 25+ programs',
   ],
   photo: '/instructor.jpg',
+  links: {
+    website: 'https://ahmedhridoy.com',
+    linkedin: 'https://www.linkedin.com/in/hridoy-ahmed-msc',
+  },
 } as const;
 
 export const testimonials = [

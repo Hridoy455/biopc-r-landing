@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { Reveal } from '@/components/ui/reveal';
 import { Icon } from '@/components/ui/icon';
 import { instructor } from '@/lib/content';
@@ -10,15 +11,14 @@ export function Instructor() {
         <Reveal className="glass mx-auto max-w-4xl overflow-hidden rounded-4xl shadow-card">
           <div className="grid gap-8 p-8 sm:grid-cols-[240px_1fr] sm:p-10">
             <div className="mx-auto w-full max-w-[240px]">
-              {/*
-                Instructor avatar. Shows initials on a brand gradient by default.
-                To use a real photo: drop the file at public/instructor.jpg and
-                replace this block with a <next/image> using instructor.photo.
-              */}
-              <div className="relative flex aspect-square items-center justify-center overflow-hidden rounded-3xl bg-brand-gradient">
-                <span className="font-display text-6xl font-bold text-white/90">
-                  {instructor.name.split(' ').map((n) => n[0]).join('')}
-                </span>
+              <div className="relative aspect-[4/5] overflow-hidden rounded-3xl bg-brand-gradient shadow-card">
+                <Image
+                  src={instructor.photo}
+                  alt={`${instructor.name} — ${siteConfig.org} instructor`}
+                  fill
+                  sizes="(max-width: 640px) 240px, 240px"
+                  className="object-cover"
+                />
               </div>
             </div>
 
@@ -37,8 +37,11 @@ export function Instructor() {
                 ))}
               </ul>
 
-              <div className="mt-6 flex gap-3">
-                <a href={siteConfig.social.linkedin} target="_blank" rel="noopener noreferrer" className="btn-secondary px-4 py-2 text-xs">
+              <div className="mt-6 flex flex-wrap gap-3">
+                <a href={instructor.links.website} target="_blank" rel="noopener noreferrer" className="btn-secondary px-4 py-2 text-xs">
+                  Portfolio
+                </a>
+                <a href={instructor.links.linkedin} target="_blank" rel="noopener noreferrer" className="btn-secondary px-4 py-2 text-xs">
                   LinkedIn
                 </a>
                 <a href={siteConfig.social.facebookPage} target="_blank" rel="noopener noreferrer" className="btn-secondary px-4 py-2 text-xs">

@@ -48,6 +48,10 @@ export async function POST(req: Request) {
   }
 
   const errors = validateRegistration(body);
+  // Payment screenshot is required and must be an image data URL.
+  if (!body.screenshotData || !/^data:image\//.test(body.screenshotData)) {
+    errors.screenshot = 'Payment screenshot is required.';
+  }
   if (Object.keys(errors).length > 0) {
     return NextResponse.json(
       { ok: false, error: 'Please check the form fields and try again.', fields: errors },
