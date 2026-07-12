@@ -28,7 +28,7 @@ export const siteConfig = {
   format: {
     duration: '6 weeks',
     mode: 'Live online (Google Meet / Zoom)',
-    sessions: '3 live classes/week — Tue, Fri & Sat, 9:30–10:30 PM',
+    sessions: '3 live classes/wk - Tue, Fri & Sat, 9:30–10:30 PM',
     schedule: [
       { day: 'Tuesday', time: '9:30 – 10:30 PM' },
       { day: 'Friday', time: '9:30 – 10:30 PM' },
