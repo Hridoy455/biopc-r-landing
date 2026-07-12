@@ -171,7 +171,7 @@ export const testimonials = [
   },
   {
     name: 'Dr. Nusrat J.',
-    role: 'Lecturer, Pharmacy',
+    role: 'Student, Pharmacy',
     rating: 5,
     quote: 'A clear, well-structured course. I now teach my own students the reproducible workflows I learned here.',
   },

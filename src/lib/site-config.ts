@@ -28,18 +28,18 @@ export const siteConfig = {
   format: {
     duration: '6 weeks',
     mode: 'Live online (Google Meet / Zoom)',
-    sessions: '3 live classes/week — Tue, Fri & Sat, 9:30–10:30 PM (BST)',
+    sessions: '3 live classes/week — Tue, Fri & Sat, 9:30–10:30 PM',
     schedule: [
       { day: 'Tuesday', time: '9:30 – 10:30 PM' },
       { day: 'Friday', time: '9:30 – 10:30 PM' },
       { day: 'Saturday', time: '9:30 – 10:30 PM' },
     ],
-    seats: 40,
+    seats: 60,
   },
 
   contactEmail: 'biopc.research@gmail.com',
   altEmail: 'research@biopc.org',
-  whatsapp: '', // e.g. '+8801XXXXXXXXX' — shown as a support contact if set.
+  whatsapp: '+8801855310554', // e.g. '+8801XXXXXXXXX' — shown as a support contact if set.
 
   social: {
     facebookPage: 'https://www.facebook.com/BioPcLab/',
