@@ -5,6 +5,7 @@ import { siteConfig } from '@/lib/site-config';
 import { MetaPixel } from '@/components/analytics/meta-pixel';
 import { GoogleAnalytics } from '@/components/analytics/google-analytics';
 import { ThemeScript } from '@/components/theme/theme-script';
+import MetaPixel from "@/components/MetaPixel";
 
 const inter = Inter({
   subsets: ['latin'],
@@ -83,9 +84,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ThemeScript />
       </head>
       <body className="min-h-screen font-sans antialiased">
-        {children}
         <MetaPixel />
         <GoogleAnalytics />
+         {children}
       </body>
     </html>
   );
