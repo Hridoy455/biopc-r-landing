@@ -2,10 +2,9 @@ import type { Metadata, Viewport } from 'next';
 import { Inter, Poppins } from 'next/font/google';
 import './globals.css';
 import { siteConfig } from '@/lib/site-config';
-import { MetaPixel } from '@/components/analytics/meta-pixel';
+import { MetaPixel } from '@/components/analytics/MetaPixel';
 import { GoogleAnalytics } from '@/components/analytics/google-analytics';
 import { ThemeScript } from '@/components/theme/theme-script';
-import MetaPixel from "@/components/MetaPixel";
 
 const inter = Inter({
   subsets: ['latin'],
