@@ -8,7 +8,7 @@ import Script from 'next/script';
  * and previews don't send events.
  */
 export function MetaPixel() {
-  const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
+  const pixelId = process.env.1893523914658507;
   if (!pixelId) return null;
 
   return (
