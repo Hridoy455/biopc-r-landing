@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { Inter, Poppins } from 'next/font/google';
 import './globals.css';
 import { siteConfig } from '@/lib/site-config';
-import { MetaPixel } from '@/components/analytics/MetaPixel';
+import MetaPixel from '@/components/analytics/meta-pixel';
 import { GoogleAnalytics } from '@/components/analytics/google-analytics';
 import { ThemeScript } from '@/components/theme/theme-script';
 
