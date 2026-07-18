@@ -20,7 +20,7 @@ export const siteConfig = {
 
   // Pricing (shown on the page + payment section).
   price: {
-    amount: 2050,
+    amount: 1550,
     currency: 'BDT',
     original: 4000,
   },
