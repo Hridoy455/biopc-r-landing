@@ -2,11 +2,13 @@
 
 import Script from 'next/script';
 
+const GA_ID = 'G-7GER6YGK8B';
+
 /**
  * Loads Google Analytics 4. Renders nothing when the measurement ID is unset.
  */
 export function GoogleAnalytics() {
-  const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+  const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || GA_ID;
   if (!gaId) return null;
 
   return (
